@@ -1,0 +1,307 @@
+{% extends "base.html" %} {% block title %}Shopping Cart{% endblock %} {% block
+content %}
+<div class="cart-container">
+  <h2>Shopping Cart</h2>
+  {% if cart_items %}
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+      <tr>
+        <td>
+          <img
+            src="{{ url_for('static', filename=item.product_type + '/' + item.image) }}"
+            alt="{{ item.name }}"
+            class="cart-item-image"
+          />
+        </td>
+        <td>{{ item.name }}</td>
+        <td>₹ {{ item.price }}</td>
+        <td class="quantity-container">
+          <button
+            class="quantity-btn decrease"
+            data-id="{{ item.id }}"
+            data-type="{{ item.product_type }}"
+          >
+            -
+          </button>
+          <input
+            type="text"
+            class="quantity-input"
+            value="{{ item.quantity }}"
+            data-id="{{ item.id }}"
+            data-type="{{ item.product_type }}"
+            readonly
+          />
+          <button
+            class="quantity-btn increase"
+            data-id="{{ item.id }}"
+            data-type="{{ item.product_type }}"
+          >
+            +
+          </button>
+        </td>
+
+        <td>₹ {{ item.price * item.quantity }}</td>
+        <td>
+          <form class="remove-form">
+            <input type="hidden" name="product_id" value="{{ item.id }}" />
+            <input
+              type="hidden"
+              name="product_type"
+              value="{{ item.product_type }}"
+            />
+            <button type="button" class="remove-btn">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="cart-summary">
+    <p>
+      <strong>Total: <span id="total-price">₹ {{ total_price }}</span></strong>
+    </p>
+    <a href="{{ url_for('views.checkout') }}" class="checkout-btn"
+      >Proceed to Checkout</a
+    >
+  </div>
+  {% else %}
+  <p>Your cart is empty.</p>
+  <a href="{{ url_for('views.home') }}" class="continue-shopping"
+    >Continue Shopping</a
+  >
+  {% endif %}
+  <div style="height: 300px"></div>
+</div>
+
+<style>
+  .cart-container {
+    width: 80%;
+    margin: auto;
+    padding: 2em 0;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+    table-layout: fixed; /* Ensures equal spacing */
+  }
+
+  .cart-table th,
+  .cart-table td {
+    /* border-bottom: 1px solid #ddd; */
+    border-bottom: none;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle; /* Aligns content vertically */
+    white-space: nowrap; /* Prevents wrapping */
+  }
+
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+  }
+
+  .remove-btn {
+    background-color: #043131;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    font-size: 0.9em;
+  }
+  .remove-btn:hover {
+    background-color: #043131;
+  }
+  .cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+  }
+
+  .checkout-btn {
+    background-color: #043131;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  .checkout-btn:hover {
+    background-color: #065656;
+  }
+  .continue-shopping {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #043131;
+    font-weight: bold;
+  }
+  .quantity-container {
+    display: flex;
+    align-items: down;
+    justify-content: center;
+    gap: 5px; /* Adds spacing */
+  }
+
+  .quantity-btn {
+    background-color: #043131;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 0;
+  }
+
+  .quantity-btn:hover {
+    background-color: #065656;
+  }
+
+  .quantity-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 1em;
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let buttons = document.querySelectorAll(".quantity-btn");
+
+    // Debugging: Check if buttons exist
+    if (buttons.length === 0) {
+      console.error(
+        "No quantity buttons found. Check if elements exist in HTML."
+      );
+      return;
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", function () {
+        let productId = this.dataset.id;
+        let productType = this.dataset.type;
+        let inputField = this.closest("td").querySelector(".quantity-input");
+
+        // Debugging: Check if input field exists
+        if (!inputField) {
+          console.error(
+            `Quantity input field not found for product ${productId}`
+          );
+          return;
+        }
+
+        let currentQuantity = parseInt(inputField.value) || 1;
+
+        if (this.classList.contains("increase")) {
+          currentQuantity++;
+        } else if (this.classList.contains("decrease") && currentQuantity > 1) {
+          currentQuantity--;
+        }
+
+        inputField.value = currentQuantity;
+
+        // Call backend to update quantity
+        updateQuantity(productId, productType, currentQuantity);
+      });
+    });
+
+    function updateQuantity(productId, productType, newQuantity) {
+      console.log(
+        `🔹 Sending Update Request - Product ID: ${productId}, Type: ${productType}, New Quantity: ${newQuantity}`
+      );
+
+      fetch("/update-cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product_id: productId,
+          product_type: productType,
+          quantity: newQuantity,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.success) {
+            console.error(`❌ Failed to update cart: ${data.message}`);
+            return;
+          }
+
+          console.log("✅ Cart updated successfully:", data);
+
+          let row = document
+            .querySelector(
+              `.quantity-input[data-id='${productId}'][data-type='${productType}']`
+            )
+            .closest("tr");
+
+          // Update the subtotal
+          let subtotalElement = row.querySelector("td:nth-child(5)");
+          if (subtotalElement) {
+            subtotalElement.innerText = `₹ ${data.updated_subtotal.toFixed(2)}`;
+          }
+
+          // Update total price
+          let totalPriceElement = document.getElementById("total-price");
+          if (totalPriceElement) {
+            totalPriceElement.innerText = `₹ ${data.total_price.toFixed(2)}`;
+          }
+        })
+        .catch((error) => console.error("⚠️ Error updating cart:", error));
+    }
+  });
+  document.addEventListener("DOMContentLoaded", function () {
+    let removeButtons = document.querySelectorAll(".remove-btn");
+
+    removeButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        let productId = this.closest("form").querySelector(
+          "input[name='product_id']"
+        ).value;
+        let productType = this.closest("form").querySelector(
+          "input[name='product_type']"
+        ).value;
+
+        fetch("/remove-from-cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            product_id: productId,
+            product_type: productType,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              console.log("✅ Product removed successfully:", data);
+              location.reload(); // Reload the page to update the cart
+            } else {
+              console.error(`❌ Failed to remove product: ${data.message}`);
+            }
+          })
+          .catch((error) => console.error("⚠️ Error removing product:", error));
+      });
+    });
+  });
+</script>
+
+{% endblock %}

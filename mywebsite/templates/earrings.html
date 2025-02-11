@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block title %} Earrings Collection {% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Earrings Collection</h1>
+  <div class="products-container">
+    {% for earring in earrings %}
+    <!-- Use the correct variable name -->
+    <div class="product">
+      <img
+        src="{{ url_for('static', filename='earrings/' + earring.image) }}"
+        alt="{{ earring.name }}"
+        style="
+          max-width: 300px;
+          height: auto;
+          border-radius: 0;
+          object-fit: cover;
+        "
+      />
+      <a
+        href="{{ url_for('views.product_details', product_type='earrings', product_id=earring.id) }}"
+        class="product-link"
+      >
+        <h3>{{ earring.name }}</h3>
+      </a>
+      <p>₹{{ earring.price }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div style="height: 2000px"></div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+  body {
+    font-family: "Poppins", sans-serif;
+  }
+  h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    color: #043131;
+  }
+  .product-name {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2em;
+    color: #043131;
+  }
+  .product-price {
+    font-family: "Poppins", sans-serif;
+    font-size: 1em;
+    color: #056d6d;
+  }
+  .add-to-cart {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.9em;
+  }
+  /* Products Container */
+  .products-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    object-fit: cover;
+    overflow: hidden;
+    gap: 2em;
+    margin-top: 2em;
+  }
+
+  /* Individual Product Styling */
+  .product {
+    flex: 1 1 calc(25% - 2em);
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  /* Product Image Styling */
+  .product img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+  }
+
+  /* Product Name and Price Styling */
+  .product p {
+    margin: 0.5em 0;
+    font-size: 1em;
+    color: #043131;
+  }
+
+  .product-link {
+    color: black; /* Makes the link text black */
+    text-decoration: none; /* Removes the underline */
+  }
+
+  .product-link:hover {
+    color: #056d6d; /* You can set a hover color for better interaction */
+    text-decoration: underline; /* Optionally, add underline on hover */
+  }
+</style>
+{% endblock %}

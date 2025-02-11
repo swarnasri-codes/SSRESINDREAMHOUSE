@@ -1,0 +1,190 @@
+{% extends "base.html" %} {% block title %}Checkout{% endblock %} {% block
+content %}
+<div class="checkout-container">
+  <form action="{{ url_for('views.process_checkout') }}" method="POST">
+    <div class="left-section">
+      <h2>Contact Information</h2>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        required
+        placeholder="Email Address"
+      />
+
+      <h2>Delivery Details</h2>
+      <select id="country" name="country" required>
+        <option value="India" selected>India</option>
+      </select>
+
+      <div class="row">
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          required
+          placeholder="First Name"
+          class="half-width"
+        />
+        <input
+          type="text"
+          id="last_name"
+          name="last_name"
+          required
+          placeholder="Last Name"
+          class="half-width"
+        />
+      </div>
+
+      <input
+        type="text"
+        id="address"
+        name="address"
+        required
+        placeholder="Street, Apartment, etc."
+      />
+
+      <div class="row">
+        <input
+          type="text"
+          id="city"
+          name="city"
+          required
+          placeholder="City"
+          class="third-width"
+        />
+        <input
+          type="text"
+          id="state"
+          name="state"
+          required
+          placeholder="State"
+          class="third-width"
+        />
+        <input
+          type="text"
+          id="pincode"
+          name="pincode"
+          required
+          placeholder="Pincode"
+          class="third-width"
+        />
+      </div>
+
+      <input
+        type="text"
+        id="phone"
+        name="phone"
+        required
+        placeholder="Phone Number"
+      />
+
+      <select id="payment mode" name="payment mode" required>
+        <option value="COD" selected>Cash On Delivery</option>
+      </select>
+    </div>
+
+    <div class="right-section">
+      <h2>Order Summary</h2>
+      <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+          <img
+            src="{{ url_for('static', filename=item.product_type + '/' + item.image) }}"
+            alt="{{ item.name }}"
+          />
+          <div>
+            <p>{{ item.name }}</p>
+            <p>₹ {{ item.price }} x {{ item.quantity }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="order-total">
+        <p>Subtotal: <span id="subtotal">₹ {{ subtotal }}</span></p>
+        <p>Shipping: <span id="shipping">₹ 40</span></p>
+        <h3>Total: <span id="total">₹ {{ subtotal + 40 }}</span></h3>
+      </div>
+
+      <button type="submit" class="checkout-btn">Order Now</button>
+    </div>
+  </form>
+</div>
+
+<style>
+  .checkout-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align items at the top */
+    gap: 2em;
+    padding: 2em;
+    font-family: "Poppins", sans-serif;
+    max-width: 1200px; /* Optional: Restrict the width */
+    margin: 0 auto; /* Center the container in the viewport */
+  }
+  .left-section,
+  .right-section {
+    flex: 1;
+    padding: 1.5em;
+    background: #fff;
+    /* border-radius: 8px; */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  h2 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  input,
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    /* border-radius: 5px; */
+    border: 1px solid #ccc;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+  }
+  .half-width {
+    width: 48%;
+  }
+  .third-width {
+    width: 32%;
+  }
+  .cart-item {
+    display: flex;
+    gap: 1em;
+    margin-top: 10px;
+  }
+  .cart-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    /* border-radius: 5px; */
+  }
+  .order-total {
+    margin-top: 15px;
+  }
+  .order-total p {
+    display: flex;
+    justify-content: space-between;
+  }
+  .checkout-btn {
+    background-color: #043131;
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  .checkout-btn:hover {
+    background-color: #065656;
+  }
+</style>
+{% endblock %}

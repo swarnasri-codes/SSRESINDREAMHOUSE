@@ -1,0 +1,105 @@
+{% extends "base.html" %} {% block title %}Order Confirmation{% endblock %} {%
+block content %}
+<div class="order-confirmation">
+  <div class="confirmation-box">
+    <div class="icon-container">
+      <img
+        src="{{ url_for('static', filename='checkmark.webp') }}"
+        alt="Success"
+        class="success-icon"
+      />
+    </div>
+    <h2>Thank You for Your Order!</h2>
+    <p>
+      Your order <strong>#{{ order_id }}</strong> has been successfully placed.
+    </p>
+
+    <div class="action-buttons">
+      <a href="{{ url_for('views.orders') }}" class="btn-primary"
+        >View Orders</a
+      >
+      <a href="{{ url_for('views.home') }}" class="btn-secondary"
+        >Continue Shopping</a
+      >
+    </div>
+  </div>
+</div>
+
+<style>
+  .order-confirmation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background: #f7f9fc;
+  }
+
+  .confirmation-box {
+    background: white;
+    padding: 30px;
+    /* border-radius: 12px; */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  h2 {
+    font-size: 22px;
+    color: #043131;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .action-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 15px;
+    text-decoration: none;
+    /* border-radius: 6px; */
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s ease;
+  }
+
+  .btn-primary {
+    background: #043131;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #065656;
+  }
+
+  .btn-secondary {
+    background: #ddd;
+    color: #333;
+  }
+
+  .btn-secondary:hover {
+    background: #bbb;
+  }
+</style>
+{% endblock %}

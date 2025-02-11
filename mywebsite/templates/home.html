@@ -1,0 +1,187 @@
+<!-- templates/home.html -->
+{% extends "base.html" %} {% block title %}Welcome to SSResinDreamHouse{%
+endblock %} {% block content %}
+<style>
+  /* General styling */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f3eb;
+  }
+
+  /* Container for stacked images */
+  .image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .image-item {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .image-item img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .image-item p {
+    font-size: 0.5rem;
+    font-weight: normal;
+    margin-top: 10px;
+    color: #333;
+  }
+
+  /* Footer Styles */
+  footer {
+    background-color: #043131;
+    color: #fff;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+
+  .left-column {
+    width: 45%;
+  }
+
+  .left-column ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .left-column ul li {
+    margin-bottom: 10px;
+  }
+
+  .left-column ul li a {
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+
+  .left-column ul li a:hover {
+    color: #eff3f4;
+  }
+
+  .right-column {
+    width: 45%;
+  }
+
+  .right-column h3 {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .right-column p {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .right-column a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .right-column a:hover {
+    color: #f6f3f0;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 10px;
+  }
+</style>
+
+<div class="image-container">
+  <div class="image-item">
+    <a href="{{ url_for('views.pendants') }}">
+      <img
+        src="{{ url_for('static', filename='pendants.webp') }}"
+        alt="Pendants"
+      />
+    </a>
+  </div>
+  <div class="image-item">
+    <a href="{{ url_for('views.earrings') }}">
+      <img
+        src="{{ url_for('static', filename='earrings.jpg') }}"
+        style="max-width: 1000%; max-height: 2500px; height: max-content"
+        alt="Earrings"
+      />
+    </a>
+  </div>
+  <div class="image-item">
+    <a href="{{ url_for('views.bracelets') }}">
+      <img
+        src="{{ url_for('static', filename='bracelets.avif') }}"
+        alt="Bracelets "
+      />
+    </a>
+  </div>
+</div>
+
+<!-- Footer
+<footer>
+  <div class="footer-container">
+    <div class="left-column">
+      <ul>
+        <li><a href="{{ url_for('views.contact_us') }}">Contact Us</a></li>
+        <li>
+          <a href="{{ url_for('views.privacy_policy') }}">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="{{ url_for('views.terms_of_service') }}">Terms of Service</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="right-column">
+      <h3>Contact Details</h3>
+      <p>
+        <strong>Email:</strong>
+        <a href="mailto:ssresindreamhouse@gmail.com"
+          >ssresindreamhouse@gmail.com</a
+        >
+      </p>
+      <p>
+        <strong>Whatsapp:</strong>
+        <a href="https://wa.me/+918248601350" target="_blank">+91 8248601350</a>
+      </p>
+      <p>
+        <strong>Instagram:</strong>
+        <a
+          href="https://www.instagram.com/ss_resin_dreamhouse/?igsh=M2h2aW5pc2RjcDJ4#"
+          target="_blank"
+          >Instagram Profile</a
+        >
+      </p>
+      <p>
+        <strong>Address:</strong> No:09, 2nd cross street, village high road,
+        Shollinganallur, Chennai - 600119
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 SSResinDreamHouse. All rights reserved.</p>
+  </div>
+</footer> -->
+
+{% endblock %}

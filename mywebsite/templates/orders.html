@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<div class="top-bar">
+    <div class="logo-text">SSResinDreamHouse</div>
+  
+  <nav class="navbar">
+    <a href="{{ url_for('views.home') }}">Shop</a>
+    <a href="{{ url_for('views.orders') }}">Orders</a>
+  </nav>
+</div>
+<div class="container">
+  <h2 class="title">Orders</h2>
+
+  {% if orders %}
+  <div class="orders-list">
+    {% for order in orders %}
+    <div class="order-card">
+      <h3>Order ID: {{ order.id }}</h3>
+      <div class="order-details">
+        {% for item in order["items"] %}
+        <div class="order-item">
+          <img src="{{ url_for('static', filename=item.product_type + '/' + item.image) }}" alt="{{ item.name }}" />
+          <div class="item-info">
+            <p>{{ item.product_name }}</p>
+            <p>Price: ₹{{ item.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="total-price">Total: ₹{{ order.total_price }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="no-orders">
+    <p><strong>No orders yet</strong></p>
+    <p>Go to the store to place an order.</p>
+  </div>
+  {% endif %}
+</div>
+<style>
+    /* Orders Page Styles */
+.logo-text {
+font-family: "Dancing Script", cursive;
+font-size: 2em;
+color: #cbc17f;
+margin-bottom: 1em;
+}
+
+.top-bar {
+    background-color: #043131;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .top-bar .logo {
+    height: 50px;
+  }
+
+  .navbar {
+    display: flex;
+    gap: 1.5em;
+  }
+
+  .navbar a {
+    color: #d3f9f9;
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 0.5em;
+  }
+
+.container {
+    max-width: 900px;
+    margin: 2em auto;
+    padding: 1em;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-card {
+    border: 2px solid #d3f9f9;
+    padding: 1em;
+    background: #f8ffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-card h3 {
+    margin-bottom: 10px;
+    color: #043131;
+}
+
+.order-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-info p {
+    margin: 5px 0;
+    color: #444;
+}
+
+.total-price {
+    font-weight: bold;
+    color: #007b7b;
+    font-size: 1.2em;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* No Orders Message */
+.no-orders {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-item img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+</style>
+</html>

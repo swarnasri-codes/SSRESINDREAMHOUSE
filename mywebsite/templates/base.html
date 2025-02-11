@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSResinDreamHouse</title>
+    <style>
+      /* General Styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f8f8;
+      }
+
+      /* Top Bar Styling */
+      .top-bar {
+        background-color: #043131;
+        padding: 0.5em 1em;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5em;
+      }
+
+      .top-bar img {
+        background-color: #043131;
+        height: 24px;
+      }
+
+      .top-bar img:hover {
+        background-color: #043131;
+        opacity: 0.8;
+      }
+
+      .login-icon {
+        background-color: #043131;
+        mix-blend-mode: luminosity;
+        padding: 4px;
+      }
+
+      .login-icon:hover {
+        background-color: #043131;
+        opacity: 1;
+      }
+      .profile-icon {
+        height: 24px;
+        background-color: #043131;
+        mix-blend-mode: luminosity;
+        padding: 4px;
+      }
+
+      .profile-icon:hover {
+        opacity: 0.8;
+      }
+
+      /* Search Bar Container */
+      .search-bar-container {
+        background-color: #043131;
+        text-align: center;
+        padding: 2em 1em;
+      }
+
+      /* Logo Styling */
+      .logo-text {
+        font-family: "Dancing Script", cursive;
+        font-size: 2em;
+        color: #cbc17f;
+        margin-bottom: 1em;
+      }
+
+      /* Search Bar */
+      .search-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .search-bar input[type="text"] {
+        padding: 0.5em 1em;
+        border: 1px solid #043131;
+        border-radius: 0;
+        font-size: 1em;
+        width: 100%;
+        max-width: 400px;
+        background-color: #fff;
+        background-size: 20px;
+        background-repeat: no-repeat;
+        background-position: 10px center;
+        padding-left: 2.5em;
+      }
+      .search-bar button {
+        padding: 0.5em 1em;
+        background-color: #043131;
+        color: #d3f9f9;
+        border: 1px solid #043131;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .search-bar button:hover {
+        background-color: #7fe4e4;
+      }
+      .cart-icon-container {
+        position: relative;
+        display: inline-block;
+      }
+      .cart-icon {
+        position: relative;
+        display: inline-block;
+      }
+      .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: black;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 3px 6px;
+        border-radius: 50%;
+      }
+      /* Navbar */
+      .navbar {
+        background-color: #043131;
+        padding: 1em;
+        color: white;
+        display: flex;
+        justify-content: center;
+        gap: 1.5em;
+      }
+      .navbar a {
+        color: #d3f9f9;
+        text-decoration: none;
+      }
+      .navbar a:hover {
+        color: #7fe4e4;
+      }
+      .suggestion-box li {
+        padding: 8px;
+        cursor: pointer;
+      }
+
+      .suggestion-box li:hover {
+        background-color: #f0f0f0;
+      }
+
+      /* Footer Styles */
+      footer {
+        background-color: #043131;
+        color: #fff;
+        padding: 20px 0;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .footer-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: flex-start;
+      }
+
+      .left-column {
+        width: 45%;
+      }
+
+      .left-column ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .left-column ul li {
+        margin-bottom: 10px;
+      }
+
+      .left-column ul li a {
+        font-family: "Poppins", sans-serif;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+
+      .left-column ul li a:hover {
+        color: #eff3f4;
+      }
+
+      .right-column {
+        width: 45%;
+      }
+
+      .right-column h3 {
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
+
+      .right-column p {
+        font-family: "Poppins", sans-serif;
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+
+      .right-column a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .right-column a:hover {
+        color: #f6f3f0;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-bar">
+      {% if session['email'] %}
+      <!-- Show Profile Icon when logged in -->
+      <a href="{{ url_for('views.profile') }}">
+        <img
+          src="{{ url_for('static', filename='login-icon.png') }}"
+          alt="Profile"
+          class="profile-icon"
+        />
+      </a>
+      {% else %}
+      <!-- Show Login Icon when not logged in -->
+      <a href="{{ url_for('auth.login') }}">
+        <img
+          src="{{ url_for('static', filename='login-icon.png') }}"
+          alt="Login"
+          class="login-icon"
+        />
+      </a>
+      {% endif %}
+
+      <!-- Cart Icon -->
+      <a href="{{ url_for('views.cart') }}" class="cart-icon">
+        <img
+          src="{{ url_for('static', filename='cart-icon.png') }}"
+          alt="Cart"
+        />
+        {% if cart_count > 0 %}
+        <span class="cart-count">{{ cart_count }}</span>
+        {% endif %}
+      </a>
+    </div>
+
+    <!-- Search Bar Section -->
+    <div class="search-bar-container">
+      <div class="logo-text">SSResinDreamHouse</div>
+      <!-- <a href="{{ url_for('views.home') }}" class="logo-text">SSResinDreamHouse</a> -->
+      <form action="/search" method="GET" class="search-bar">
+        <input type="text" name="query" />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/">Home</a>
+      <a href="{{ url_for('views.pendants') }}">Pendants</a>
+      <a href="/earrings">Earrings</a>
+      <a href="/bracelets">Bracelets</a>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="content">{% block content %}{% endblock %}</div>
+  </body>
+</html>
+<!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="left-column">
+      <ul>
+        <li><a href="{{ url_for('views.contact_us') }}">Contact Us</a></li>
+        <li>
+          <a href="{{ url_for('views.privacy_policy') }}">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="{{ url_for('views.terms_of_service') }}">Terms of Service</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="right-column">
+      <h3>Contact Details</h3>
+      <p>
+        <strong>Email:</strong>
+        <a href="mailto:ssresindreamhouse@gmail.com"
+          >ssresindreamhouse@gmail.com</a
+        >
+      </p>
+      <p>
+        <strong>Whatsapp:</strong>
+        <a href="https://wa.me/+918248601350" target="_blank">+91 8248601350</a>
+      </p>
+      <p>
+        <strong>Instagram:</strong>
+        <a
+          href="https://www.instagram.com/ss_resin_dreamhouse/?igsh=M2h2aW5pc2RjcDJ4#"
+          target="_blank"
+          >Instagram Profile</a
+        >
+      </p>
+      <p>
+        <strong>Address:</strong> No:09, 2nd cross street, village high road,
+        Shollinganallur, Chennai - 600119
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 SSResinDreamHouse. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.querySelector(".search-form input");
+    const suggestionBox = document.createElement("ul");
+    suggestionBox.classList.add("suggestion-box");
+    document.body.appendChild(suggestionBox);
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim();
+
+      if (!query) {
+        suggestionBox.innerHTML = "";
+        suggestionBox.style.display = "none";
+        return;
+      }
+
+      fetch(`/autocomplete?query=${query}`)
+        .then((response) => response.json())
+        .then((suggestions) => {
+          suggestionBox.innerHTML = "";
+          suggestions.forEach((suggestion) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = suggestion;
+            listItem.addEventListener("click", () => {
+              searchInput.value = suggestion;
+              suggestionBox.style.display = "none";
+            });
+            suggestionBox.appendChild(listItem);
+          });
+          suggestionBox.style.display = "block";
+        });
+    });
+
+    suggestionBox.style.position = "absolute";
+    suggestionBox.style.left = searchInput.offsetLeft + "px";
+    suggestionBox.style.top =
+      searchInput.offsetTop + searchInput.offsetHeight + "px";
+    suggestionBox.style.zIndex = 1000;
+    suggestionBox.style.backgroundColor = "#fff";
+    suggestionBox.style.border = "1px solid #ccc";
+    suggestionBox.style.width = searchInput.offsetWidth + "px";
+    suggestionBox.style.listStyle = "none";
+    suggestionBox.style.padding = "0";
+    suggestionBox.style.margin = "0";
+
+    suggestionBox.addEventListener("mouseleave", () => {
+      suggestionBox.style.display = "none";
+    });
+  });
+</script>

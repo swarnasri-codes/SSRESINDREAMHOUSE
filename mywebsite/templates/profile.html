@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- Top Bar -->
+<div class="top-bar">
+  
+    <div class="logo-text">SSResinDreamHouse</div>
+  
+  <nav class="navbar">
+    <a href="{{ url_for('views.home') }}">Shop</a>
+    <a href="{{ url_for('views.orders') }}" class="nav-link">Orders</a>
+  </nav>
+</div>
+
+<div class="profile-container">
+  <h2 class="profile-title">User Profile</h2>
+  <div class="profile-card">
+    <p><strong>Email:</strong> {{ email }}</p>
+    <a href="{{ url_for('auth.logout') }}" class="logout-button">Logout</a>
+  </div>
+</div>
+<style>
+  .logo-text {
+    font-family: "Dancing Script", cursive;
+    font-size: 2em;
+    color: #cbc17f;
+    margin-bottom: 1em;
+    }
+
+  .top-bar {
+    background-color: #043131;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .top-bar .logo {
+    height: 50px;
+  }
+
+  .navbar {
+    display: flex;
+    gap: 1.5em;
+  }
+
+  .navbar a {
+    color: #d3f9f9;
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 0.5em;
+  }
+
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .profile-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .profile-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+  }
+
+  .logout-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+
+  .logout-button:hover {
+    background-color: #c0392b;
+  }
+</style>
+</html>

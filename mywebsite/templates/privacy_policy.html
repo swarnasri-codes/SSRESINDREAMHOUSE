@@ -1,0 +1,76 @@
+<!-- templates/privacy_policy.html -->
+{% extends "base.html" %} {% block title %}Privacy Policy{% endblock %} {% block
+content %}
+
+<style>
+  .center-content {
+    display: flex;
+    flex-direction: column; /* Aligns content vertically */
+    justify-content: center;
+    align-items: flex-start; /* Align text to the left */
+    text-align: left;
+    color: black;
+    padding: 50px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto; /* Center the content horizontally */
+  }
+
+  .center-content h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .center-content p {
+    font-size: 1.1rem;
+    margin-bottom: 15px; /* Space between each section */
+  }
+
+  .center-content a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .center-content a:hover {
+    text-decoration: underline; /* Underline links on hover */
+  }
+</style>
+
+<div class="center-content">
+  <h1>Privacy Policy</h1>
+  <p>
+    Your privacy is important to us. We collect your personal information for
+    the purpose of processing orders, improving our services, and for
+    communication purposes.
+  </p>
+  <h3>Information Collection</h3>
+  <p>
+    We collect information such as name, email, shipping address, and phone
+    number when you make a purchase or contact us for customer service.
+  </p>
+  <h3>Usage of Information</h3>
+  <p>
+    We use your personal data to process orders, send confirmations, and improve
+    our services. We do not share your personal information with third parties
+    except for order fulfillment purposes (shipping companies, payment
+    processors).
+  </p>
+  <h3>Cookies</h3>
+  <p>
+    We use cookies to improve user experience, analyze website traffic, and
+    enhance our services. You may choose to disable cookies, but it may impact
+    your experience on our website.
+  </p>
+  <h3>Security</h3>
+  <p>
+    Your personal information is securely stored and protected from unauthorized
+    access.
+  </p>
+  <h3>Changes to This Policy</h3>
+  <p>
+    We reserve the right to update this Privacy Policy at any time. Any changes
+    will be posted on this page.
+  </p>
+</div>
+{% endblock %}

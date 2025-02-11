@@ -1,0 +1,247 @@
+{% extends "base.html" %} {% block title %} {{ product['name'] }} {% endblock %}
+{% block content %}
+<div class="product-details-container">
+  <!-- Left: Product Image -->
+  <div class="product-image">
+    <img
+      src="{{ url_for('static', filename= product_type + '/' + product['image']) }}"
+      alt="{{ product['name'] }}"
+    />
+  </div>
+
+  <!-- Right: Product Information -->
+  <div class="product-info" style="margin-left: -150px">
+    <p class="logo-text">SSResinDreamHouse</p>
+    <h1 class="product-title">{{ product['name'] }}</h1>
+    <p class="product-price">₹ {{ product['price'] }}</p>
+    <p class="product-tax">Taxes included.</p>
+
+    <!-- Quantity Selector -->
+    <div class="quantity-container">
+      <label for="quantity">Quantity:</label>
+      <div class="quantity-buttons">
+        <button id="decrease" class="quantity-btn">-</button>
+        <input type="text" id="quantity" value="1" readonly />
+        <button id="increase" class="quantity-btn">+</button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button
+        class="add-to-cart"
+        data-id="{{ product['id'] }}"
+        data-type="{{ product_type }}"
+        data-name="{{ product['name'] }}"
+        data-price="{{ product['price'] }}"
+        data-image="{{ product['image'] }}"
+      >
+        Add to Cart
+      </button>
+
+      <button
+        class="buy-now"
+        data-id="{{ product['id'] }}"
+        data-type="{{ product_type }}"
+        data-name="{{ product['name'] }}"
+        data-price="{{ product['price'] }}"
+        data-image="{{ product['image'] }}"
+      >
+        Buy Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Updated CSS for Enhanced Look -->
+<style>
+  /* Overall Layout */
+  .product-details-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4em;
+    padding: 2em 4em;
+  }
+
+  /* Product Image */
+  .product-image img {
+    max-width: 600px;
+    height: auto;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Product Information */
+  .product-info {
+    max-width: 500px;
+  }
+
+  .product-title {
+    font-size: 2.2em;
+    color: #043131;
+    font-weight: 600;
+  }
+
+  .product-price {
+    font-size: 1.6em;
+    color: #043131;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .product-tax {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  /* Quantity Selector */
+  .quantity-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 1.2em;
+  }
+
+  .quantity-buttons {
+    display: flex;
+    align-items: center;
+    border: 2px solid #043131;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .quantity-btn {
+    background-color: #043131;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+  .quantity-btn:hover {
+    background-color: #056d6d;
+  }
+
+  #quantity {
+    width: 50px;
+    text-align: center;
+    border: none;
+    font-size: 1.1em;
+    outline: none;
+  }
+
+  /* Buttons */
+  .actions {
+    margin-top: 20px;
+  }
+
+  .actions button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .add-to-cart {
+    background-color: white;
+    border: 2px solid #043131;
+    color: #043131;
+  }
+
+  .add-to-cart:hover {
+    background-color: #043131;
+    color: white;
+  }
+
+  .buy-now {
+    background-color: black;
+    color: white;
+    border: none;
+  }
+
+  .buy-now:hover {
+    background-color: #222;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .product-details-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.5em;
+    }
+
+    .product-image img {
+      max-width: 100%;
+    }
+
+    .product-info {
+      max-width: 100%;
+      padding-top: 1em;
+    }
+  }
+</style>
+
+<script>
+  const decreaseBtn = document.getElementById("decrease");
+  const increaseBtn = document.getElementById("increase");
+  const quantityInput = document.getElementById("quantity");
+
+  decreaseBtn.addEventListener("click", () => {
+    let currentValue = parseInt(quantityInput.value);
+    if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+    }
+  });
+
+  increaseBtn.addEventListener("click", () => {
+    let currentValue = parseInt(quantityInput.value);
+    quantityInput.value = currentValue + 1;
+  });
+</script>
+
+<script>
+  document.querySelectorAll(".add-to-cart, .buy-now").forEach((button) => {
+    button.addEventListener("click", function () {
+      let product_id = this.dataset.id;
+      let product_type = this.dataset.type;
+      let name = this.dataset.name;
+      let price = this.dataset.price;
+      let image = this.dataset.image;
+      let quantity = document.getElementById("quantity").value;
+
+      fetch("/add-to-cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product_id,
+          product_type,
+          name,
+          price,
+          image,
+          quantity,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            if (this.classList.contains("buy-now")) {
+              window.location.href = "/cart"; // "Buy Now"
+            } else {
+              alert("Item added to cart!");
+            }
+          } else {
+            alert("Error adding to cart.");
+          }
+        });
+    });
+  });
+</script>
+
+{% endblock %}
